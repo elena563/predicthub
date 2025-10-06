@@ -1,0 +1,4 @@
+predicthub/__pycache__
+predictions/migrations
+predictions/__pycache__
+db.sqlite3

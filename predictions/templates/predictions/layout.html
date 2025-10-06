@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>PredictHub - Where Collective Wisdom Meets Data</title>
+        <link rel="stylesheet" href="{% static 'predictions/style.css' %}">
+        {% block script %}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1>PREDICTHUB</h1>
+            <nav>
+                {% if user.is_authenticated %}
+                    <a href="#">Predictions</a>
+                    <a href="#">Leaderboard</a>
+                    <a href="#">Profile</a>
+                {% else %}
+                    <a class="btn1" href="#">Login</a>
+                {% endif %}
+            </nav>
+        </header>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

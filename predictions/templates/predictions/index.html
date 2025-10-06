@@ -1,0 +1,26 @@
+{% extends "predictions/layout.html" %}
+
+{% block body %}
+    {% if not user.is_authenticated %}
+    <section class="hero">
+        <h2>Forecast tomorrow, together</h2>
+        <p>Transform data into actionable foresight. Join a community focused on accuracy.</p>
+        <a class="btn2" href="#">Get started</a>
+        <a class="btn3" href="#">Discover Predictions</a>
+    </section>
+    <section>
+        <h3>Why PredictHub?</h3>
+        <p>At PredictHub, we believe in the power of collective intelligence. Whether you're a seasoned data scientist or just starting out, our platform offers tools and a community to help you make accurate predictions.</p>
+        <ul>
+            <li><p>Collaborate with a community of data enthusiasts.</p><img></li>
+            <li><img><p>Access the Analytics Panel to study and enhance your predictions.</p></li>
+            <li><p>Track your performance on our dynamic leaderboard.</p><img></li>
+        </ul>
+    </section>
+    {% else %}
+        <h3>Welcome back, {{user.username}}</h3>
+        <p>Here are some recent predictions. Keep an eye on the leaderboard to see how you rank among other users!</p>
+    {% endif %}
+
+    <a class="btn1" href="#">See More</a>
+{% endblock %}
