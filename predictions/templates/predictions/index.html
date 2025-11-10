@@ -1,6 +1,8 @@
 {% extends "predictions/layout.html" %}
+{% load static %}
 
 {% block body %}
+
     {% if not user.is_authenticated %}
     <section class="hero">
         <h2>Forecast tomorrow, together</h2>
@@ -8,19 +10,64 @@
         <a class="btn2" href="#">Get started</a>
         <a class="btn3" href="#">Discover Predictions</a>
     </section>
-    <section>
+    <section class="why">
         <h3>Why PredictHub?</h3>
         <p>At PredictHub, we believe in the power of collective intelligence. Whether you're a seasoned data scientist or just starting out, our platform offers tools and a community to help you make accurate predictions.</p>
         <ul>
-            <li><p>Collaborate with a community of data enthusiasts.</p><img></li>
-            <li><img><p>Access the Analytics Panel to study and enhance your predictions.</p></li>
-            <li><p>Track your performance on our dynamic leaderboard.</p><img></li>
-        </ul>
+  <li>
+    <span><h4>Collaborate with a community of data enthusiasts.</h4>
+    <p>Join a vibrant network of analysts, developers and curious minds where you can exchange ideas, share feedback and partner up on data-driven challenges. Collaborare non è solo possibile: è incoraggiato, con spazi dedicati, forum tematici e opportunità per ampliare la tua visione e affinare la tua tecnica.</p></span>
+    <img src="{% static 'predictions/img/community.jpg' %}">
+  </li>
+  <li>
+    <img src="{% static 'predictions/img/analytics.jpg' %}">
+    <span><h4>Access the Analytics Panel to study and enhance your predictions.</h4>
+    <p>Unlock powerful tools that let you monitor real-time metrics, visualise trends and dive deep into the performance of your models. Con il nostro pannello Analytics puoi identificare punti di forza e debolezza, testare ipotesi e migliorare progressivamente la qualità delle tue predizioni.</p></span>
+  </li>
+  <li>
+    <span><h4>Track your performance on our dynamic leaderboard.</h4>
+    <p>See how you stack up against other users, gain recognition for your achievements and strive to climb the ranks. La classifica è aggiornata continuamente, riflettendo il tuo impegno e i risultati concreti: una bella motivazione per trasformare una curiosità in un percorso di crescita.</p></span>
+    <img src="{% static 'predictions/img/leaderboard.jpg' %}">
+  </li>
+</ul>
+
     </section>
+
     {% else %}
         <h3>Welcome back, {{user.username}}</h3>
         <p>Here are some recent predictions. Keep an eye on the leaderboard to see how you rank among other users!</p>
     {% endif %}
 
+    <section>
+    {% if predictions %}
+        <div class="pred-grid">    
+        {% for p in predictions %}
+            <a>
+                <div class="pred-card">
+                    <div>
+                        <span class="dates-{{p.status|lower}}">{{p.start_date}} - {{p.end_date}}</span>
+                        <span class="{{p.status|lower}}">{{p.status}}</span>
+                    </div>
+                    <h3>{{p.title}}</h3>
+                    <p class="{{p.category|lower}}">{{p.category}}</p>
+                    <p class="desc">{{p.description}}</p>
+                    <div>
+                    {% if p.status == "Active" %}
+                        <a>Participate</a>
+                        <!--<span>{{p.npreds}} until now</span>-->
+                    {% else %}
+                        <a>View Results</a>
+                        <!--<span>{{p.npreds}} total</span>-->
+                    {% endif %}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>Everything seems to be quiet now... Try tomorrow!</p>
+    {% endif %}
     <a class="btn1" href="#">See More</a>
+    </section>
+
 {% endblock %}

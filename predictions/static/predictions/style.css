@@ -1,14 +1,25 @@
+:root{
+    --primary-orange: #D28016;
+    --primary-blue: #466CD6;
+
+    --text-light: #C9C9C9;
+    --text-mid: #515151;
+    --text-dark: #333;
+    --bg-light: #fbfbfb;
+    --bg-gray: #f3f3f3;
+}
+
 html, body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--bg-gray);
     margin: 0;
     padding: 0;
-    color: #333;
+    color: var(--text-dark);
     box-sizing: border-box;
 }
 
 header {
-    color: #333;
+    color: var(--text-dark);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
@@ -47,6 +58,10 @@ h3{
     text-align: center;
 }
 
+h4{
+    font-size: 1.5rem;
+}
+
 p{
     margin: 20px 0;
     font-size: 1.2rem;
@@ -68,7 +83,7 @@ p{
 
 .btn1 {
     background-color: #466CD6;
-    color: #f5f5f5;
+    color:  var(--bg-light);
     margin-right: 10px;
 }
 
@@ -97,7 +112,53 @@ p{
     color: #466CD6;
 }
 
+.why img{
+    width: 35%;
+}
 li{
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 5em;
+}
+
+.pred-grid{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.pred-card{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--bg-light);
+}
+.pred-card span{
+    font-size: 0.8rem;
+}
+.active{
+    background-color: #BB7600;
+}
+.closed{
+    background-color: #750084;
+}
+.dates-active{
+    color: var(--text-mid);
+}
+.dates-closed, .desc{
+    color: var(--text-light);
+}
+.category{
+    padding: 2px 5px;
+    border-radius: 25%;
+}
+.weather{
+    background-color: #F7DEDE;
+    border-color: red;
+    color: #520000;
+}
+.politics{
+    background-color: #DEE0F7;
+    border-color: #0004FF;
+    color: #0A0052;
 }
