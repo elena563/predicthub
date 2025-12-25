@@ -1,0 +1,17 @@
+{% extends "predictions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    PredictHub - Create new prediction
+{% endblock %}
+
+{% block body %}
+    <h2>Create new prediction event</h2>
+
+    <form action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Publish prediction">
+    </form>
+
+{% endblock %}
