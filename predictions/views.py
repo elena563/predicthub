@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from forms import PredictionForm, RegistrationForm
-from .models import PredictionEvent, UserProfile
+from .forms import PredictionForm, RegistrationForm
+from .models import PredictionEvent, UserProfile, Comment
 
 def index(request):
     predictions = PredictionEvent.objects.all()
@@ -76,7 +76,7 @@ def create_prediction_event(request):
             prediction_event.author = request.user.userprofile
             
             prediction_event.save()
-            return redirect('prediction_event', pk=prediction_event.pk)
+            return redirect('prediction', pk=prediction_event.pk)
         else:
             return render(request, "predictions/create_prediction.html", {
                     'form': PredictionForm(),
@@ -86,14 +86,52 @@ def create_prediction_event(request):
         "form": PredictionForm()
     })
 
-def predictionPage(request, name): # sostituire name
-    prediction = PredictionEvent.objects.filter(name=name).first()
+def predictionPage(request, id): 
+    predEvent = PredictionEvent.objects.filter(id=id).first()
 
-    if prediction is not None:
+    if predEvent is not None:
         return render(request, "predictions/prediction.html", {
-            "prediction": prediction
+            "prediction": predEvent
         })
     else:
         return render(request, "predictions/index.html", {
-            "error": "Prediction has been deleted or removed"
+            "error": "Prediction event has been deleted or removed"
         })
+    
+@login_required
+def comment(request, id):
+    if request.method == 'POST':
+        predEvent = PredictionEvent.objects.get(id=id)
+        comment_text = request.POST.get("comment")
+        Comment.objects.create(
+            predEvent=predEvent,
+            author=request.user,
+            text=comment_text
+        )
+        return redirect('prediction', pk=predEvent.pk)
+    
+def saved(request):
+    return render(request, "predictions/saved.html", {
+            "user": request.user,
+        })
+
+def save(request, name):
+    predEvent = PredictionEvent.objects.get(name=name)
+    if request.user.saved_predictions.filter(pk=predEvent.pk).exists():
+        request.user.saved_predictions.remove(predEvent)
+        return render(request, "predictions/prediction.html", {
+                    "predEvent": predEvent,
+                "message": "Removed!"
+        })
+    else:
+        request.user.saved_predictions.add(predEvent)
+        return render(request, "predictions/prediction.html", {
+            "predEvent": predEvent,
+            "message": "Added!"
+        })
+    
+def delete(request, id):
+    if request.method == "POST":
+        predEvent = PredictionEvent.objects.get(id=id)
+        predEvent.delete()
+    return redirect('')

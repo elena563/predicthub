@@ -1,0 +1,92 @@
+{% extends "predictions/layout.html" %}
+
+{% block title %}
+    {{ predEvent.title }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ predEvent.title }}</h2>
+    <img class="limg" src="{{ predEvent.image }}" alt="{{ predEvent.name }}">
+    <div>
+        <span class="dates-{{predEvent.status|lower}}">{{predEvent.start_date}} - {{predEvent.end_date}}</span>
+        <span class="{{predEvent.status|lower}}">{{predEvent.status}}</span>
+    </div>
+    <h3>{{predEvent.title}}</h3>
+    <p class="{{predEvent.category|lower}}">{{predEvent.category}}</p>
+    <p class="desc">{{predEvent.description}}</p>
+    <div>
+
+    {% if listing.status == 'Not yet started' %}
+    <div>
+        <h3>Prediction Event has not yet started</h3>
+        <p>You still have time to study and prepare your prediction!</p>
+    </div>
+
+    {% elif listing.status == 'Active' %}
+        {% if user.is_authenticated %}
+        <div>
+            <form action="{% url 'save' predEvent.id %}" method="POST">
+                {% csrf_token %}
+                {% if predEvent in user.saved_predictions.all %}
+                    <input type="submit" class="btn2" value="Remove from saved events">
+                {% else %}
+                    <input type="submit" class="btn2" value="Save in saved events">
+                {% endif %}
+                {% if message %}
+                    <p>{{ message }}</p>
+                {% endif %}
+            </form>
+        </div>
+        <div>
+            <h3>Submit your prediction!</h3>
+            <form action="{% url 'predict' predEvent.id %}" method="POST">
+                {% csrf_token %}
+                <input name="prediction" type="number" required>
+                <input type="submit" class="btn1" value="Submit">
+            </form>
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
+        </div>
+        {% else %}
+            <p><a href="{% url 'login' %}">Log In</a> or 
+                <a href="{% url 'register' %}">Register</a> to interact with the prediction event</p>
+        {% endif %}
+
+    {% elif predEvent.status == 'Closed' %}
+        <div>
+            <h3>The event is closed</h3>
+            {% if user.prediction == predEvent.outcome %}
+                <p>You got the prediction right!</p>
+            {% else %}
+                <p>The winner is {{ highest_bid.bidder.username }} with € <strong>{{ highest_bid.price }}</strong></p>
+            {% endif %}
+        </div>
+        <div>
+            <h3>Comments</h3>
+            {% for comment in predEvent.comments.all %}
+                <p><strong>{{ comment.author.username }}</strong>: {{ comment.text }}</p>
+            {% endfor %}
+            {% if user.is_authenticated %}
+            <form action="{% url 'comment' predEvent.id %}" method="POST">
+                {% csrf_token %}
+                <textarea name="comment" required></textarea>
+                <input type="submit" class="btn1" value="Submit comment">
+            </form>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if user.username == predEvent.author %}
+        <div>
+            <form action="{% url 'delete' predEvent.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn1">Delete event</button>
+            </form>
+            <p>Attention: PredictHub is not a game. To ensure the platform's integrity, we recommend that you do not delete predictions while they are active. 
+            If no valid ethical or other reasons for the decision are confirmed, your admin status and/or reputation score may be reconsidered.</p>
+        </div>
+    {% else %}
+    
+
+{% endblock %}

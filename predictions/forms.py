@@ -9,4 +9,4 @@ class PredictionForm(forms.ModelForm):
 class RegistrationForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['username', 'email', 'password', 'confirmation', 'bio', 'is_expert', 'is_admin']
+        fields = ['username', 'email', 'password', 'bio', 'is_expert', 'is_admin']
