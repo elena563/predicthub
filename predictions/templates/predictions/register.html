@@ -1,0 +1,48 @@
+{% extends "predictions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="register-container">
+    <h2>Register</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="full_name">Full Name:</label>
+            <input type="text" name="full_name" id="full_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password1">Password:</label>
+            <input type="password" name="password1" id="password1" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password2">Confirm Password:</label>
+            <input type="password" name="password2" id="password2" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea name="bio" id="bio" class="form-control"></textarea>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" name="is_expert" id="is_expert" class="form-check-input">
+            <label for="is_expert" class="form-check-label">Expert</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" name="is_admin" id="is_admin" class="form-check-input">
+            <label for="is_admin" class="form-check-label">Admin</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}

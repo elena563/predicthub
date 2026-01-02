@@ -10,10 +10,10 @@ from .forms import PredictionForm, RegistrationForm
 from .models import PredictionEvent, UserProfile, Comment
 
 def index(request):
-    predictions = PredictionEvent.objects.all()
-    return render(request, "predictions/index.html", predictions=predictions)
+    predictions = PredictionEvent.objects.all()[:10]
+    return render(request, "predictions/index.html", {"predictions": predictions})
 
-def login(request):
+def login_view(request):
     if request.method == "POST":
 
         username = request.POST["username"]
@@ -30,36 +30,34 @@ def login(request):
     else:
         return render(request, "predictions/login.html")
 
-def logout(request):
+def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-def register(request):
+def register_view(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            bio = form.cleaned_data.get("bio", "")
-            is_expert = form.cleaned_data.get("is_expert", False)
-            is_admin = form.cleaned_data.get("is_admin", False)
+            # UserCreationForm salva automaticamente User con password hashata
+            user = form.save(commit=False)
+            user.email = form.cleaned_data["email"]
+            user.save()
 
-            user = User.objects.create_user(username=username, email=email, password=password)
-
+            # Crea UserProfile collegato
             UserProfile.objects.create(
                 user=user,
-                username=username,
-                email=email,
-                bio=bio,
-                is_expert=is_expert,
-                is_admin=is_admin
+                username=user.username,
+                email=user.email,
+                full_name=form.cleaned_data.get("full_name", ""),
+                bio=form.cleaned_data.get("bio", ""),
+                is_expert=form.cleaned_data.get("is_expert", False),
+                is_admin=form.cleaned_data.get("is_admin", False)
             )
             login(request, user)
             return redirect("index")
         else:
             return render(request, "predictions/register.html", {
-                    'form': RegistrationForm(),
+                    'form': form,
                     "error": "Invalid data"
                 })
     else:

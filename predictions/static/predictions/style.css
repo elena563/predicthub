@@ -18,12 +18,109 @@ html, body {
     box-sizing: border-box;
 }
 
+a {
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.login-container, .register-container {
+    max-width: 400px;
+    margin: 50px auto 40px auto;
+    background: var(--bg-light);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(70, 108, 214, 0.08);
+    padding: 2.5em 2em 2em 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+
+.login-container h2, .register-container h2 {
+    text-align: center;
+    color: var(--primary-blue);
+    margin-bottom: 0.5em;
+}
+
+.login-container form, .register-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-mid);
+}
+
+.form-control {
+    padding: 0.6em 0.8em;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1em;
+    background: #fff;
+    color: var(--text-dark);
+    transition: border 0.2s;
+}
+.form-control:focus {
+    border: 1.5px solid var(--primary-blue);
+    outline: none;
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7em 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-primary:hover {
+    background: #365bb5;
+}
+
+.alert {
+    padding: 0.7em 1em;
+    border-radius: 5px;
+    margin-bottom: 1em;
+    font-size: 1em;
+}
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.login-container p, .register-container p {
+    text-align: center;
+    margin-top: 1.2em;
+}
+.login-container a, .register-container a {
+    color: var(--primary-orange);
+    text-decoration: underline;
+}
+.login-container a:hover, .register-container a:hover {
+    color: var(--primary-blue);
+}
+
 header {
     color: var(--text-dark);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.header-alt {
+    background-color: var(--primary-orange);
+    color: #fff;
 }
 
 h1{
@@ -45,8 +142,11 @@ section {
     padding: 90px 20px;
     text-align: center;
 }
-h2{
+.hero h2{
     font-size: 4rem;
+}
+h2{
+    font-size: 2rem;
     margin-top: 0;
     margin-bottom: 15px;
 }

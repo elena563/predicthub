@@ -5,8 +5,8 @@ from django.utils import timezone
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user")
     username = models.CharField(max_length=100, unique=True)
+    full_name = models.CharField(max_length=100, null=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=64, default=None)
     joined_date = models.DateTimeField(auto_now_add=True)
     reputation_score = models.IntegerField(default=0)
     bio = models.TextField(blank=True, null=True)
